@@ -129,6 +129,8 @@ find_package(tf2_eigen REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
+find_package(PCL REQUIRED)
+find_package(pcl_conversions REQUIRED)
 
 # thread library
 find_package(Threads REQUIRED)
@@ -186,6 +188,13 @@ if(USE_SOCKET_PUBLISHER)
     include_directories(${SIOCLIENT_INCLUDE_DIR} ${PROTOBUF_INCLUDE_DIRS})
 endif()
 
+# PCL 
+include_directories(
+  include
+  ${PCL_INCLUDE_DIRS}
+)
+
+add_definitions(${PCL_DEFINITIONS})
 #########
 # Build #
 #########

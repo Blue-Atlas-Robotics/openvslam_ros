@@ -22,12 +22,16 @@
 #include <opencv2/core/core.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
+#include <geometry_msgs/msg/pose_array.hpp>
 
 namespace openvslam_ros {
 class system {
 public:
     system(const std::shared_ptr<openvslam::config>& cfg, const std::string& vocab_file_path, const std::string& mask_img_path);
     void publish_pose(const Eigen::Matrix4d& cam_pose_wc, const rclcpp::Time& stamp);
+    void publish_pointcloud(const rclcpp::Time& stamp);
+    void publish_keyframes(const rclcpp::Time& stamp);
     void setParams();
     openvslam::system SLAM_;
     std::shared_ptr<openvslam::config> cfg_;
@@ -36,19 +40,28 @@ public:
     rmw_qos_profile_t custom_qos_;
     cv::Mat mask_;
     std::vector<double> track_times_;
+
     std::shared_ptr<rclcpp::Publisher<nav_msgs::msg::Odometry>> pose_pub_;
-    std::shared_ptr<rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>>
-        init_pose_sub_;
+    std::shared_ptr<rclcpp::Publisher<sensor_msgs::msg::PointCloud2>> pc_pub_;
+    std::shared_ptr<rclcpp::Publisher<geometry_msgs::msg::PoseArray>> keyframes_pub_;
+    std::shared_ptr<rclcpp::Publisher<geometry_msgs::msg::PoseArray>> keyframes_2d_pub_;
+    std::shared_ptr<rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>> init_pose_sub_;
+
     std::shared_ptr<tf2_ros::TransformBroadcaster> map_to_odom_broadcaster_;
     std::string odom_frame_, map_frame_, base_link_;
     std::string camera_frame_, camera_optical_frame_;
     std::unique_ptr<tf2_ros::Buffer> tf_;
     std::shared_ptr<tf2_ros::TransformListener> transform_listener_;
+    
     bool publish_tf_;
+    bool publish_pointcloud_;
+    bool publish_keyframes_;
+    
     double transform_tolerance_;
 
 private:
     void init_pose_callback(const geometry_msgs::msg::PoseWithCovarianceStamped::SharedPtr msg);
+    Eigen::AngleAxisd rot_ros_to_cv_map_frame_;
 };
 
 class mono : public system {

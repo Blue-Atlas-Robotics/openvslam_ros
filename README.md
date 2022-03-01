@@ -1,6 +1,6 @@
 # openvslam_ros
 
-[OpenVSLAM](https://github.com/OpenVSLAM-Community/openvslam)'s ROS package.
+[OpenVSLAM](https://github.com/Blue-Atlas-Robotics/openvslam)'s ROS package.
 
 ## Subscribed topics
 
@@ -21,6 +21,10 @@
 ## Published topics
 
 - `~/camera_pose`
+- `~/pointcloud`
+- `/tf`
+- `~/keyframes`
+- `~/keyframes_2d`
 
 ## Parameters
 
@@ -29,6 +33,8 @@
 - `base_link`
 - `camera_frame`
 - `publish_tf`
+- `publish_pointcloud`
+- `publish_keyframes`
 - `transform_tolerance`
 - `use_exact_time` (stereo, RGBD only)
 

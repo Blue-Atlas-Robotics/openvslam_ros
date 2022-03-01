@@ -57,7 +57,7 @@ foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
     target_include_directories(${EXECUTABLE_TARGET}
                                PRIVATE ${rclcpp_INCLUDE_DIRS} ${OpenCV_INCLUDE_DIRS})
     target_link_libraries(${EXECUTABLE_TARGET}
-                          PRIVATE ${openvslam_LIBS} ${rclcpp_LIBRARIES} ${OpenCV_LIBRARIES})
+                          PRIVATE ${openvslam_LIBS} ${rclcpp_LIBRARIES} ${OpenCV_LIBRARIES} ${PCL_LIBRARIES})
     ament_target_dependencies(${EXECUTABLE_TARGET}
                               PUBLIC
                               rclcpp
@@ -72,7 +72,8 @@ foreach(EXECUTABLE_TARGET IN LISTS EXECUTABLE_TARGETS)
                               tf2_eigen
                               tf2_geometry_msgs
                               tf2_msgs
-                              tf2_ros)
+                              tf2_ros
+                              pcl_conversions)
     install(TARGETS ${EXECUTABLE_TARGET}
             DESTINATION lib/${PROJECT_NAME})
 
